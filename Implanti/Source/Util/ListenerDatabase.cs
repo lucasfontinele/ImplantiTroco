@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Implanti.Source.Classes;
@@ -17,49 +18,63 @@ namespace Implanti.Source
         private static String _collectionName = "Movimentacoes";
         private IMongoDatabase _database;
         private IMongoCollection<BsonDocument> collection;
+        private BsonObjectId LastId;
+        private BsonObjectId ObjectId;
+        private readonly BsonDocument Filter;
+        private readonly BsonDocument Sort;
+        public double value;
+
+        public List<BsonDocument> GetData() => collection.Find(Filter).Sort(Sort).Limit(1).ToList();
 
         public ListenerDatabase()
         {
-             RetrieveData().Wait();
+            _database = Database.GetConnection().GetDatabase("DigisatServer");
+            collection = _database.GetCollection<BsonDocument>("Movimentacoes");
+            Filter = new BsonDocument("_t", new BsonRegularExpression(".*PreVenda.*", "i"));
+            Sort = new BsonDocument("DataHoraEmissao", -1.0);
         }
 
         //Todo: Trabalhar com assincronismo
-        public async Task RetrieveData()
-        {
+        public Boolean RetrieveData()
+        { 
             try
-            {
-                _database = Database.GetConnection().GetDatabase("DigisatServer");
-                collection = _database.GetCollection<BsonDocument>("Movimentacoes");
-
-                BsonDocument filter = new BsonDocument();
-                filter.Add("_t", new BsonRegularExpression(".*PreVenda.*", "i"));
-                filter.Add("$and", new BsonArray()
-                    .Add(new BsonDocument()
-                        .Add("Historicos.NomeUsuario", "admin")
-                    )
-                );
-
-                BsonDocument projection = new BsonDocument();
-                projection.Add("ItensBase", 1.0);
-                projection.Add("Historicos", 1.0);
-
-                var options = new FindOptions<BsonDocument>()
+            {                
+                if (LastId == null)
                 {
-                    Projection = projection
-                };
+                    LastId = this.GetData()[0]["_id"].AsObjectId;
+                }
 
-                var cursor = collection.Find(filter).Sort(new BsonDocument("Historicos.NomeUsuario", -1)).Limit(1).ToList();
-
-                cursor.ForEach(x =>
+                if (LastId != this.GetData()[0]["_id"].AsObjectId)
                 {
-                    MessageBox.Show(x["_t"].ToString());
-                });
+                    var ini = new IniFile("Settings.ini");
 
+                    if (ini.Read("User", "Settings").ToLower() == GetData()[0]["Historicos"][0]["NomeUsuario"].ToString().ToLower())
+                    {                  
+                        LastId = this.GetData()[0]["_id"].AsObjectId;
+
+                        GetData()[0]["ItensBase"].AsBsonArray.ToList().ForEach(x =>
+                        {
+                            if (!x["Cancelado"].AsBoolean)
+                            {
+                                value += x["Quantidade"].ToDouble() * x["PrecoUnitario"].ToDouble();
+                                value += x["OutrasDespesasDigitado"].ToDouble() + x["OutrasDespesasProporcional"].ToDouble();
+                                value += x["Frete"].ToDouble() + x["Seguro"].ToDouble();
+                                value -= x["DescontoDigitado"].ToDouble() + x["DescontoProporcional"].ToDouble();                                
+                            }
+                        });
+
+                        return true;
+                    }
+                }
+
+                return false;
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
+
+            return false;
         }
     }
 }
