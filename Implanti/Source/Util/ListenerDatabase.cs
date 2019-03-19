@@ -38,36 +38,42 @@ namespace Implanti.Source
         public Boolean RetrieveData()
         { 
             try
-            {                
-                if (LastId == null)
+            {
+                if (GetData().Count > 0)
                 {
-                    LastId = this.GetData()[0]["_id"].AsObjectId;
-                }
-
-                if (LastId != this.GetData()[0]["_id"].AsObjectId)
-                {
-                    var ini = new IniFile("Settings.ini");
-
-                    if (ini.Read("User", "Settings").ToLower() == GetData()[0]["Historicos"][0]["NomeUsuario"].ToString().ToLower())
-                    {                  
+                    if (LastId == null)
+                    {
                         LastId = this.GetData()[0]["_id"].AsObjectId;
+                    }
 
-                        GetData()[0]["ItensBase"].AsBsonArray.ToList().ForEach(x =>
+                    if (LastId != this.GetData()[0]["_id"].AsObjectId)
+                    {
+                        var ini = new IniFile("Settings.ini");
+
+                        if (ini.Read("User", "Settings").ToLower() == GetData()[0]["Historicos"][0]["NomeUsuario"].ToString().ToLower())
                         {
-                            if (!x["Cancelado"].AsBoolean)
-                            {
-                                value += x["Quantidade"].ToDouble() * x["PrecoUnitario"].ToDouble();
-                                value += x["OutrasDespesasDigitado"].ToDouble() + x["OutrasDespesasProporcional"].ToDouble();
-                                value += x["Frete"].ToDouble() + x["Seguro"].ToDouble();
-                                value -= x["DescontoDigitado"].ToDouble() + x["DescontoProporcional"].ToDouble();                                
-                            }
-                        });
+                            LastId = this.GetData()[0]["_id"].AsObjectId;
 
-                        return true;
+                            var itensBase = GetData()[0]["ItensBase"].AsBsonArray.ToList();                            
+
+                            if (itensBase.Count > 0)
+                            {
+                                itensBase.ForEach(x =>
+                                {
+                                    if (!x["Cancelado"].AsBoolean)
+                                    {
+                                        value += x["Quantidade"].ToDouble() * x["PrecoUnitario"].ToDouble();
+                                        value += x["OutrasDespesasDigitado"].ToDouble() + x["OutrasDespesasProporcional"].ToDouble();
+                                        value += x["Frete"].ToDouble() + x["Seguro"].ToDouble();
+                                        value -= x["DescontoDigitado"].ToDouble() + x["DescontoProporcional"].ToDouble();
+                                    }
+                                });
+
+                                return true;
+                            }
+                        }
                     }
                 }
-
-                return false;
             }
             catch (Exception e)
             {

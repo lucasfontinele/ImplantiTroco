@@ -81,7 +81,7 @@ namespace Implanti
             {
                 double total = Convert.ToDouble(txtTroco.Text);
 
-                lblValor.Text = $"{total - listener.value}";
+                lblValor.Text = $"{string.Format("{0:C1}", (total - listener.value))}";
             }
             catch (Exception error)
             {
@@ -91,22 +91,25 @@ namespace Implanti
 
         private void txtTroco_OnValueChanged(object sender, EventArgs e)
         {
-            t1.Enabled = true;
-            t1.Interval = 30000;
-
-            if (!t1.Enabled)
+            try
             {
-                t1.Start();
-                t1.Tick += new EventHandler(timer1_Tick);
+                Double value = Double.Parse(txtTroco.Text);
+
+                txtTroco.Text = value.ToString("C");
+
+                t1.Enabled = true;
+                t1.Interval = 30000;
+
+                if (!t1.Enabled)
+                {
+                    t1.Start();
+                    t1.Tick += new EventHandler(timer1_Tick);
+                }
             }
+            catch
+            {
 
-            //Implementar regex
-            //var regex = new Regex(@"\$\d+\.\d{2}");
-
-            //if (!regex.Match(this.txtTroco.Text))
-            //{
-
-            //}
+            }
         }
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -116,6 +119,18 @@ namespace Implanti
             }
 
             t1.Stop();
+        }
+
+        private void txtTroco_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Char keyChar = e.KeyChar;
+
+            Regex regex = new Regex(@"\d+(,\d{1,2})?");
+
+            if (!Char.IsDigit(keyChar) && keyChar != 8)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

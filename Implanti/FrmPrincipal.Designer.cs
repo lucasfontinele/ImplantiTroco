@@ -36,12 +36,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.lblValor = new Bunifu.Framework.UI.BunifuCustomLabel();
+            this.bunifuCustomLabel1 = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnTroco = new Bunifu.Framework.UI.BunifuFlatButton();
             this.txtTroco = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.tmrRegistro = new System.Windows.Forms.Timer(this.components);
-            this.bunifuCustomLabel1 = new Bunifu.Framework.UI.BunifuCustomLabel();
-            this.lblValor = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.toolBarStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -102,6 +102,25 @@
             this.panel2.Size = new System.Drawing.Size(623, 295);
             this.panel2.TabIndex = 3;
             this.panel2.VisibleChanged += new System.EventHandler(this.panel2_VisibleChanged);
+            // 
+            // lblValor
+            // 
+            this.lblValor.AutoSize = true;
+            this.lblValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblValor.Location = new System.Drawing.Point(279, 47);
+            this.lblValor.Name = "lblValor";
+            this.lblValor.Size = new System.Drawing.Size(0, 25);
+            this.lblValor.TabIndex = 8;
+            // 
+            // bunifuCustomLabel1
+            // 
+            this.bunifuCustomLabel1.AutoSize = true;
+            this.bunifuCustomLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuCustomLabel1.Location = new System.Drawing.Point(167, 47);
+            this.bunifuCustomLabel1.Name = "bunifuCustomLabel1";
+            this.bunifuCustomLabel1.Size = new System.Drawing.Size(106, 25);
+            this.bunifuCustomLabel1.TabIndex = 7;
+            this.bunifuCustomLabel1.Text = "O troco é:";
             // 
             // pictureBox1
             // 
@@ -168,30 +187,12 @@
             this.txtTroco.TabIndex = 4;
             this.txtTroco.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.txtTroco.OnValueChanged += new System.EventHandler(this.txtTroco_OnValueChanged);
+            this.txtTroco.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTroco_KeyPress);
             // 
             // tmrRegistro
             // 
             this.tmrRegistro.Interval = 5000;
             this.tmrRegistro.Tick += new System.EventHandler(this.tmrRegistro_Tick);
-            // 
-            // bunifuCustomLabel1
-            // 
-            this.bunifuCustomLabel1.AutoSize = true;
-            this.bunifuCustomLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bunifuCustomLabel1.Location = new System.Drawing.Point(167, 47);
-            this.bunifuCustomLabel1.Name = "bunifuCustomLabel1";
-            this.bunifuCustomLabel1.Size = new System.Drawing.Size(139, 25);
-            this.bunifuCustomLabel1.TabIndex = 7;
-            this.bunifuCustomLabel1.Text = "O troco é: R$";
-            // 
-            // lblValor
-            // 
-            this.lblValor.AutoSize = true;
-            this.lblValor.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblValor.Location = new System.Drawing.Point(312, 47);
-            this.lblValor.Name = "lblValor";
-            this.lblValor.Size = new System.Drawing.Size(0, 25);
-            this.lblValor.TabIndex = 8;
             // 
             // FrmPrincipal
             // 
