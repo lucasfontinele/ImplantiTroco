@@ -186,7 +186,6 @@
             this.txtTroco.Size = new System.Drawing.Size(296, 44);
             this.txtTroco.TabIndex = 4;
             this.txtTroco.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtTroco.OnValueChanged += new System.EventHandler(this.txtTroco_OnValueChanged);
             this.txtTroco.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTroco_KeyPress);
             // 
             // tmrRegistro

@@ -53,8 +53,8 @@ namespace Implanti
             if (listener.RetrieveData())
             {
                 this.WindowState = FormWindowState.Normal;
-                t1.Enabled = true;
-                t1.Start();
+                //t1.Enabled = true;
+                //t1.Start();
 
                 t1.Tick += new EventHandler(timer1_Tick);
             }            
@@ -89,28 +89,6 @@ namespace Implanti
             }
         }
 
-        private void txtTroco_OnValueChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                Double value = Double.Parse(txtTroco.Text);
-
-                txtTroco.Text = value.ToString("C");
-
-                t1.Enabled = true;
-                t1.Interval = 30000;
-
-                if (!t1.Enabled)
-                {
-                    t1.Start();
-                    t1.Tick += new EventHandler(timer1_Tick);
-                }
-            }
-            catch
-            {
-
-            }
-        }
         private void timer1_Tick(object sender, EventArgs e)
         {
             if (WindowState == FormWindowState.Normal || WindowState == FormWindowState.Maximized)
@@ -124,13 +102,30 @@ namespace Implanti
         private void txtTroco_KeyPress(object sender, KeyPressEventArgs e)
         {
             Char keyChar = e.KeyChar;
-
-            Regex regex = new Regex(@"\d+(,\d{1,2})?");
+            String campo;
 
             if (!Char.IsDigit(keyChar) && keyChar != 8)
             {
                 e.Handled = true;
             }
+            string verifica = "^[0-9]";
+            campo = txtTroco.Text;
+            if (Regex.IsMatch(keyChar.ToString(), verifica))
+            {
+                campo = keyChar + campo;
+                campo = campo.Replace("R$", "").Trim();
+                campo = campo.Replace(" ", "").Trim();
+                if (campo.Length <= 2)
+                {
+                    txtTroco.Text = double.Parse("0."+campo).ToString("C2");
+                }
+                else
+                {
+                    txtTroco.Text = double.Parse(campo).ToString("C2");
+                }
+                
+                e.Handled = true;
+            }            
         }
     }
 }
