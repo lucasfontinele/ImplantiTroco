@@ -103,29 +103,47 @@ namespace Implanti
         {
             Char keyChar = e.KeyChar;
             String campo;
+            String decimalvar;
+            String inteirovar;
+            campo = keyChar + txtTroco.Text;
+            campo = campo.Replace("R$", "");
+            campo = campo.Replace(",", "");
+            campo = campo.Replace(".", "");
+            campo = campo.Replace(" ", "");
 
-            if (!Char.IsDigit(keyChar) && keyChar != 8)
+            if (e.KeyChar == (Char)Keys.Delete)
             {
-                e.Handled = true;
+                MessageBox.Show("Olha o delete");
             }
-            string verifica = "^[0-9]";
-            campo = txtTroco.Text;
-            if (Regex.IsMatch(keyChar.ToString(), verifica))
+            else
             {
-                campo = keyChar + campo;
-                campo = campo.Replace("R$", "").Trim();
-                campo = campo.Replace(" ", "").Trim();
-                if (campo.Length <= 2)
+                try
                 {
-                    txtTroco.Text = double.Parse("0."+campo).ToString("C2");
-                }
-                else
-                {
+                    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ','))
+                    {
+                        e.Handled = true;
+                    }
+                    e.Handled = true;
+                    if (campo.Length > 2)
+                    {
+                        decimalvar = campo.Substring(campo.Length - 2, campo.Length - (campo.Length - 2));
+                        inteirovar = campo.Substring(0, campo.Length - 2);
+                        campo = inteirovar + ',' + decimalvar;
+                    }
                     txtTroco.Text = double.Parse(campo).ToString("C2");
                 }
-                
-                e.Handled = true;
-            }            
+                catch (Exception ex)
+                {
+                    e.Handled = true;
+                    campo = campo.Replace(keyChar.ToString(), "");
+                    if (e.KeyChar == (char)Keys.Back && campo.Length >= 1)
+                    {
+                        campo = campo.Remove(0, 1);
+                        txtTroco.Text = campo;
+                        txtTroco.Text = double.Parse(campo).ToString("C2");
+                    }
+                }
+            }
         }
     }
 }
