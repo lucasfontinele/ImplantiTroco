@@ -38,7 +38,7 @@ namespace Implanti.Source
         public Boolean RetrieveData()
         { 
             try
-            {
+            {                
                 if (GetData().Count > 0)
                 {
                     if (LastId == null)
@@ -58,10 +58,11 @@ namespace Implanti.Source
 
                             if (itensBase.Count > 0)
                             {
+                                value = 0;
                                 itensBase.ForEach(x =>
                                 {
                                     if (!x["Cancelado"].AsBoolean)
-                                    {
+                                    {                                        
                                         value += x["Quantidade"].ToDouble() * x["PrecoUnitario"].ToDouble();
                                         value += x["OutrasDespesasDigitado"].ToDouble() + x["OutrasDespesasProporcional"].ToDouble();
                                         value += x["Frete"].ToDouble() + x["Seguro"].ToDouble();

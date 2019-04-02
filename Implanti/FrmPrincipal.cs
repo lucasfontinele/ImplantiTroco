@@ -18,6 +18,7 @@ namespace Implanti
     {
         private ListenerDatabase listener;
         private Timer t1;
+        private int ButtonCount;
 
         public FrmPrincipal()
         {
@@ -29,6 +30,8 @@ namespace Implanti
             tmrRegistro.Enabled = true;
             tmrRegistro.Start();
             tmrRegistro.Interval = Convert.ToInt32(new IniFile("Settings.ini").Read("TempoVerificador", "Definicoes"));
+
+            ButtonCount = 0;
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
@@ -53,6 +56,7 @@ namespace Implanti
             if (listener.RetrieveData())
             {
                 this.WindowState = FormWindowState.Normal;
+                lblTotal.Text = listener.value.ToString();
                 //t1.Enabled = true;
                 //t1.Start();
 
@@ -77,16 +81,7 @@ namespace Implanti
 
         private void btnTroco_Click(object sender, EventArgs e)
         {
-            try
-            {
-                double total = Convert.ToDouble(txtTroco.Text);
-
-                lblValor.Text = $"{string.Format("{0:C1}", (total - listener.value))}";
-            }
-            catch (Exception error)
-            {
-                MessageBox.Show(error.Message);
-            }
+            Executa();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -99,50 +94,39 @@ namespace Implanti
             t1.Stop();
         }
 
-        private void txtTroco_KeyPress(object sender, KeyPressEventArgs e)
+        private void calcEdit_KeyPress(object sender, KeyPressEventArgs e)
         {
-            Char keyChar = e.KeyChar;
-            String campo;
-            String decimalvar;
-            String inteirovar;
-            campo = keyChar + txtTroco.Text;
-            campo = campo.Replace("R$", "");
-            campo = campo.Replace(",", "");
-            campo = campo.Replace(".", "");
-            campo = campo.Replace(" ", "");
+            Char keyChar = e.KeyChar;           
 
-            if (e.KeyChar == (Char)Keys.Delete)
+            if (keyChar == (Char)Keys.Enter)
             {
-                MessageBox.Show("Olha o delete");
+                Executa();
+            }            
+        }
+
+        private void Executa()
+        {
+            try
+            {
+                ButtonCount += 1;
+
+                if (ButtonCount <= 1)
+                {
+                    var campo = calcEdit.Text;
+                    campo = campo.Replace("R$", "");
+
+                    Double total = Convert.ToDouble(campo);
+                    lblValor.Text = String.Format("{0:C1}", (total - listener.value));                    
+                }
+                else if (ButtonCount > 1)
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                }
+                
             }
-            else
+            catch (Exception error)
             {
-                try
-                {
-                    if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ','))
-                    {
-                        e.Handled = true;
-                    }
-                    e.Handled = true;
-                    if (campo.Length > 2)
-                    {
-                        decimalvar = campo.Substring(campo.Length - 2, campo.Length - (campo.Length - 2));
-                        inteirovar = campo.Substring(0, campo.Length - 2);
-                        campo = inteirovar + ',' + decimalvar;
-                    }
-                    txtTroco.Text = double.Parse(campo).ToString("C2");
-                }
-                catch (Exception ex)
-                {
-                    e.Handled = true;
-                    campo = campo.Replace(keyChar.ToString(), "");
-                    if (e.KeyChar == (char)Keys.Back && campo.Length >= 1)
-                    {
-                        campo = campo.Remove(0, 1);
-                        txtTroco.Text = campo;
-                        txtTroco.Text = double.Parse(campo).ToString("C2");
-                    }
-                }
+                MessageBox.Show(error.Message);
             }
         }
     }

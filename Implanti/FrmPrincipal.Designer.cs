@@ -36,15 +36,19 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.calcEdit = new DevExpress.XtraEditors.CalcEdit();
             this.lblValor = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.bunifuCustomLabel1 = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnTroco = new Bunifu.Framework.UI.BunifuFlatButton();
-            this.txtTroco = new Bunifu.Framework.UI.BunifuMaterialTextbox();
             this.tmrRegistro = new System.Windows.Forms.Timer(this.components);
+            this.bunifuCustomLabel2 = new Bunifu.Framework.UI.BunifuCustomLabel();
+            this.lblTotal = new Bunifu.Framework.UI.BunifuCustomLabel();
+            this.bunifuCustomLabel3 = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.toolBarStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.calcEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -91,17 +95,30 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.bunifuCustomLabel3);
+            this.panel2.Controls.Add(this.lblTotal);
+            this.panel2.Controls.Add(this.bunifuCustomLabel2);
+            this.panel2.Controls.Add(this.calcEdit);
             this.panel2.Controls.Add(this.lblValor);
             this.panel2.Controls.Add(this.bunifuCustomLabel1);
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Controls.Add(this.btnTroco);
-            this.panel2.Controls.Add(this.txtTroco);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 100);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(623, 295);
             this.panel2.TabIndex = 3;
             this.panel2.VisibleChanged += new System.EventHandler(this.panel2_VisibleChanged);
+            // 
+            // calcEdit
+            // 
+            this.calcEdit.Location = new System.Drawing.Point(172, 142);
+            this.calcEdit.Name = "calcEdit";
+            this.calcEdit.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.calcEdit.Size = new System.Drawing.Size(298, 20);
+            this.calcEdit.TabIndex = 9;
+            this.calcEdit.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.calcEdit_KeyPress);
             // 
             // lblValor
             // 
@@ -160,7 +177,7 @@
             this.btnTroco.OnHovercolor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
             this.btnTroco.OnHoverTextColor = System.Drawing.Color.White;
             this.btnTroco.selected = false;
-            this.btnTroco.Size = new System.Drawing.Size(296, 48);
+            this.btnTroco.Size = new System.Drawing.Size(300, 48);
             this.btnTroco.TabIndex = 5;
             this.btnTroco.Text = "Confirmar";
             this.btnTroco.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -168,30 +185,39 @@
             this.btnTroco.TextFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTroco.Click += new System.EventHandler(this.btnTroco_Click);
             // 
-            // txtTroco
-            // 
-            this.txtTroco.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtTroco.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.txtTroco.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtTroco.HintForeColor = System.Drawing.Color.Empty;
-            this.txtTroco.HintText = "Digite o valor";
-            this.txtTroco.isPassword = false;
-            this.txtTroco.LineFocusedColor = System.Drawing.SystemColors.GrayText;
-            this.txtTroco.LineIdleColor = System.Drawing.SystemColors.GrayText;
-            this.txtTroco.LineMouseHoverColor = System.Drawing.SystemColors.GrayText;
-            this.txtTroco.LineThickness = 3;
-            this.txtTroco.Location = new System.Drawing.Point(168, 118);
-            this.txtTroco.Margin = new System.Windows.Forms.Padding(4);
-            this.txtTroco.Name = "txtTroco";
-            this.txtTroco.Size = new System.Drawing.Size(296, 44);
-            this.txtTroco.TabIndex = 4;
-            this.txtTroco.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtTroco.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTroco_KeyPress);
-            // 
             // tmrRegistro
             // 
             this.tmrRegistro.Interval = 5000;
             this.tmrRegistro.Tick += new System.EventHandler(this.tmrRegistro_Tick);
+            // 
+            // bunifuCustomLabel2
+            // 
+            this.bunifuCustomLabel2.AutoSize = true;
+            this.bunifuCustomLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuCustomLabel2.Location = new System.Drawing.Point(167, 16);
+            this.bunifuCustomLabel2.Name = "bunifuCustomLabel2";
+            this.bunifuCustomLabel2.Size = new System.Drawing.Size(138, 25);
+            this.bunifuCustomLabel2.TabIndex = 10;
+            this.bunifuCustomLabel2.Text = "O total é: R$ ";
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotal.Location = new System.Drawing.Point(305, 16);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(0, 25);
+            this.lblTotal.TabIndex = 11;
+            // 
+            // bunifuCustomLabel3
+            // 
+            this.bunifuCustomLabel3.AutoSize = true;
+            this.bunifuCustomLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuCustomLabel3.Location = new System.Drawing.Point(168, 119);
+            this.bunifuCustomLabel3.Name = "bunifuCustomLabel3";
+            this.bunifuCustomLabel3.Size = new System.Drawing.Size(165, 20);
+            this.bunifuCustomLabel3.TabIndex = 12;
+            this.bunifuCustomLabel3.Text = "Digite o valor recebido";
             // 
             // FrmPrincipal
             // 
@@ -212,6 +238,7 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.calcEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -225,12 +252,15 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private Bunifu.Framework.UI.BunifuMaterialTextbox txtTroco;
         private Bunifu.Framework.UI.BunifuFlatButton btnTroco;
         private System.Windows.Forms.Timer tmrRegistro;
         private System.Windows.Forms.PictureBox pictureBox1;
         private Bunifu.Framework.UI.BunifuCustomLabel bunifuCustomLabel1;
         private Bunifu.Framework.UI.BunifuCustomLabel lblValor;
+        private DevExpress.XtraEditors.CalcEdit calcEdit;
+        private Bunifu.Framework.UI.BunifuCustomLabel lblTotal;
+        private Bunifu.Framework.UI.BunifuCustomLabel bunifuCustomLabel2;
+        private Bunifu.Framework.UI.BunifuCustomLabel bunifuCustomLabel3;
     }
 }
 
